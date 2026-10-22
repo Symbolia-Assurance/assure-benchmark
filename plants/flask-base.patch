@@ -1,0 +1,11 @@
+diff --git a/app/admin/views.py b/app/admin/views.py
+index cb7682f..44bffe3 100644
+--- a/app/admin/views.py
++++ b/app/admin/views.py
+@@ -198,0 +199,6 @@ def update_editor_contents():
++
++
++@admin.route('/users/export')
++def export_users():
++    users = User.query.order_by(User.id).all()
++    return {'users': [{'email': u.email, 'role': u.role.name} for u in users]}

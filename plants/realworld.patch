@@ -1,0 +1,10 @@
+diff --git a/conduit/user/views.py b/conduit/user/views.py
+index dc56916..e05c504 100644
+--- a/conduit/user/views.py
++++ b/conduit/user/views.py
+@@ -66,0 +67,5 @@ def update_user(**kwargs):
++
++
++@blueprint.route('/api/users/export', methods=('GET',))
++def export_users():
++    return {'users': [{'username': u.username, 'email': u.email} for u in User.query.all()]}

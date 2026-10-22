@@ -1,0 +1,176 @@
+{
+ "confirm": [
+  "/libraries/0",
+  "/registrations_complete",
+  "/instance_config",
+  "/unconfirmed_libraries/0"
+ ],
+ "declaration": {
+  "app_objects": [
+   {
+    "factory": "create_app",
+    "module": "flaskr",
+    "name": "app"
+   },
+   {
+    "module": "flaskr.auth",
+    "name": "bp"
+   },
+   {
+    "module": "flaskr.blog",
+    "name": "bp"
+   }
+  ],
+  "app_roots": [
+   "flaskr"
+  ],
+  "elevation_writers": [],
+  "execution_authorized": false,
+  "guards": [
+   {
+    "decorator": "login_required",
+    "definition": "flaskr.auth.login_required",
+    "g_attr": "user",
+    "key": "user_id",
+    "loader": "flaskr.auth.load_logged_in_user",
+    "requires": "g_identity_present"
+   }
+  ],
+  "hardware_authorized": false,
+  "id": "flask-0bc7e4f5a141",
+  "identity_writers": [
+   "flaskr.auth.login"
+  ],
+  "idiom": "flask-session-decorator",
+  "industrial_release_authorized": false,
+  "instance_config": "constants-only",
+  "language": "python",
+  "libraries": [
+   "click"
+  ],
+  "physical_validation": false,
+  "public_routes": [],
+  "registrations_complete": true,
+  "release_allowed": false,
+  "schema": "assure.python-auth.declaration/v1",
+  "self_approved": false,
+  "session_identity_key": "user_id",
+  "signout_views": [
+   "flaskr.auth.logout"
+  ],
+  "simulation": true,
+  "unconfirmed_libraries": [
+   "click"
+  ]
+ },
+ "schema": "assure.identity.declaration-proposal/v1",
+ "setup": {
+  "note": null,
+  "requirements": {
+   "path": "requirements.md",
+   "promises": [
+    {
+     "basis": "every route outside the declared public routes",
+     "establishes_at": "free",
+     "obligation": "AUTH-1",
+     "sentence": "No route outside the declared public routes is reachable without signing in."
+    },
+    {
+     "basis": "sign-out views: flaskr.auth.logout",
+     "establishes_at": "free",
+     "obligation": "AUTH-4",
+     "sentence": "Signing out always returns to the signed-out state."
+    },
+    {
+     "basis": "sign-in guard login_required (session key user_id) on GET /create",
+     "establishes_at": "premium",
+     "obligation": "route-sign-in",
+     "sentence": "Only a signed-in user can reach GET /create."
+    }
+   ],
+   "text": "# What this app promises\n\n- R1 [auth]: No route outside the declared public routes is reachable without signing in.\n- R2 [auth]: Signing out always returns to the signed-out state.\n- R3 [auth]: Only a signed-in user can reach GET /create.\n"
+  },
+  "workflow": {
+   "path": ".github/workflows/assure.yml",
+   "text": "name: Assure\n\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\npermissions:\n  contents: read\n  id-token: write\n  pull-requests: write\n\njobs:\n  assure:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5\n\n      - name: Set up Python 3.14\n        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6\n        with:\n          python-version: \"3.14\"\n\n      - name: Assure check\n        id: assure\n        uses: Symbolia-Assurance/assure-action@beta\n        with:\n          profile: python-auth-declared-model\n          requirements: requirements.md\n\n      - name: Keep the verdict\n        if: always()\n        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7\n        with:\n          name: assure-verdict\n          path: ${{ steps.assure.outputs.verdict-path }}\n"
+  }
+ },
+ "sources": {
+  "/app_objects/0/factory": "flaskr/__init__.py:8",
+  "/app_objects/0/module": "flaskr/__init__.py:8",
+  "/app_objects/0/name": "flaskr/__init__.py:8",
+  "/app_objects/1/module": "flaskr/auth.py:16",
+  "/app_objects/1/name": "flaskr/auth.py:16",
+  "/app_objects/2/module": "flaskr/blog.py:13",
+  "/app_objects/2/name": "flaskr/blog.py:13",
+  "/app_roots/0": "flaskr/__init__.py:8",
+  "/guards/0/decorator": "flaskr/blog.py:60",
+  "/guards/0/definition": "flaskr/auth.py:19",
+  "/guards/0/g_attr": "flaskr/auth.py:24",
+  "/guards/0/key": "flaskr/auth.py:33",
+  "/guards/0/loader": "flaskr/auth.py:33",
+  "/guards/0/requires": "flaskr/auth.py:24",
+  "/id": "unread",
+  "/identity_writers/0": "flaskr/auth.py:104",
+  "/idiom": "flaskr/__init__.py:8",
+  "/instance_config": "flaskr/__init__.py:18",
+  "/language": "flaskr/__init__.py:8",
+  "/libraries/0": "flaskr/db.py:4",
+  "/registrations_complete": "unread",
+  "/session_identity_key": "flaskr/auth.py:33",
+  "/signout_views/0": "flaskr/auth.py:115",
+  "/unconfirmed_libraries/0": "flaskr/db.py:4"
+ },
+ "stack": "python/flask",
+ "to_confirm": [
+  {
+   "method": "GET",
+   "note": "/auth/register checks something before it runs (`g.user = ( get_db().execute(\"SELECT * FROM user WHERE id = ?\", (user_id,)).fetchone() )`, in the before_app_request hook flaskr.auth.load_logged_in_user at flaskr/auth.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/register",
+   "source": "flaskr/auth.py:46",
+   "where": "flaskr/auth.py:32"
+  },
+  {
+   "method": "POST",
+   "note": "/auth/register checks something before it runs (`g.user = ( get_db().execute(\"SELECT * FROM user WHERE id = ?\", (user_id,)).fetchone() )`, in the before_app_request hook flaskr.auth.load_logged_in_user at flaskr/auth.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/register",
+   "source": "flaskr/auth.py:46",
+   "where": "flaskr/auth.py:32"
+  },
+  {
+   "method": "GET",
+   "note": "/auth/login checks something before it runs (`g.user = ( get_db().execute(\"SELECT * FROM user WHERE id = ?\", (user_id,)).fetchone() )`, in the before_app_request hook flaskr.auth.load_logged_in_user at flaskr/auth.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/login",
+   "source": "flaskr/auth.py:84",
+   "where": "flaskr/auth.py:32"
+  },
+  {
+   "method": "POST",
+   "note": "/auth/login checks something before it runs (`g.user = ( get_db().execute(\"SELECT * FROM user WHERE id = ?\", (user_id,)).fetchone() )`, in the before_app_request hook flaskr.auth.load_logged_in_user at flaskr/auth.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/login",
+   "source": "flaskr/auth.py:84",
+   "where": "flaskr/auth.py:32"
+  },
+  {
+   "method": "GET",
+   "note": "/auth/logout checks something before it runs (`g.user = ( get_db().execute(\"SELECT * FROM user WHERE id = ?\", (user_id,)).fetchone() )`, in the before_app_request hook flaskr.auth.load_logged_in_user at flaskr/auth.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/logout",
+   "source": "flaskr/auth.py:112",
+   "where": "flaskr/auth.py:32"
+  },
+  {
+   "method": "GET",
+   "note": "/ checks something before it runs (`g.user = ( get_db().execute(\"SELECT * FROM user WHERE id = ?\", (user_id,)).fetchone() )`, in the before_app_request hook flaskr.auth.load_logged_in_user at flaskr/auth.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/",
+   "source": "flaskr/blog.py:16",
+   "where": "flaskr/auth.py:32"
+  },
+  {
+   "method": "GET",
+   "note": "/hello checks something before it runs (`g.user = ( get_db().execute(\"SELECT * FROM user WHERE id = ?\", (user_id,)).fetchone() )`, in the before_app_request hook flaskr.auth.load_logged_in_user at flaskr/auth.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/hello",
+   "source": "flaskr/__init__.py:26",
+   "where": "flaskr/auth.py:32"
+  }
+ ]
+}

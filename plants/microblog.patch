@@ -1,0 +1,11 @@
+diff --git a/app/main/routes.py b/app/main/routes.py
+index 103bbc7..0d72611 100644
+--- a/app/main/routes.py
++++ b/app/main/routes.py
+@@ -241,0 +242,6 @@ def notifications():
++
++
++@bp.route('/export_all_posts')
++def export_all_posts():
++    posts = db.session.scalars(sa.select(Post).order_by(Post.timestamp.desc()))
++    return [{'author': p.author.username, 'body': p.body} for p in posts]

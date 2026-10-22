@@ -1,0 +1,10 @@
+verdict-path=<run>/out/jwt-restful.head.assure.json
+outcome=verdict
+exit-code=1
+colour=red
+not-established=5
+report-status=refused
+report-url=
+report-cost-usd=
+report-charge-usd=
+report-allowance-remaining=

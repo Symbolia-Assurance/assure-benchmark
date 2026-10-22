@@ -1,0 +1,264 @@
+{
+ "confirm": [
+  "/libraries/0",
+  "/libraries/1",
+  "/libraries/2",
+  "/libraries/3",
+  "/libraries/4",
+  "/libraries/5",
+  "/libraries/6",
+  "/libraries/7",
+  "/libraries/8",
+  "/libraries/9",
+  "/libraries/10",
+  "/libraries/11",
+  "/libraries/12",
+  "/libraries/13",
+  "/libraries/14",
+  "/libraries/15",
+  "/libraries/16",
+  "/registrations_complete",
+  "/unconfirmed_libraries/0",
+  "/unconfirmed_libraries/1",
+  "/unconfirmed_libraries/2",
+  "/unconfirmed_libraries/3",
+  "/unconfirmed_libraries/4",
+  "/unconfirmed_libraries/5",
+  "/unconfirmed_libraries/6",
+  "/unconfirmed_libraries/7",
+  "/unconfirmed_libraries/8",
+  "/unconfirmed_libraries/9",
+  "/unconfirmed_libraries/10",
+  "/unconfirmed_libraries/11",
+  "/unconfirmed_libraries/12",
+  "/unconfirmed_libraries/13",
+  "/unconfirmed_libraries/14",
+  "/unconfirmed_libraries/15",
+  "/unconfirmed_libraries/16"
+ ],
+ "declaration": {
+  "app_objects": [
+   {
+    "factory": "create_app",
+    "module": "app",
+    "name": "app"
+   },
+   {
+    "module": "app.auth",
+    "name": "auth"
+   },
+   {
+    "module": "app.user",
+    "name": "user"
+   }
+  ],
+  "app_roots": [
+   "app"
+  ],
+  "elevation_writers": [],
+  "execution_authorized": false,
+  "guards": [
+   {
+    "decorator": "login_required",
+    "definition": "flask_login.login_required",
+    "key": "user_id",
+    "library": {
+     "name": "flask_login",
+     "version": "0.4.1"
+    },
+    "requires": "session_key_present"
+   }
+  ],
+  "hardware_authorized": false,
+  "id": "flask-54eacd891df8",
+  "identity_writers": [
+   "app.auth.views.login"
+  ],
+  "idiom": "flask-session-decorator",
+  "industrial_release_authorized": false,
+  "language": "python",
+  "libraries": [
+   "arrow",
+   "click",
+   "faker",
+   "flask_assets",
+   "flask_babel",
+   "flask_bcrypt",
+   "flask_limiter",
+   "flask_login",
+   "flask_mail",
+   "flask_migrate",
+   "flask_rq2",
+   "flask_sqlalchemy",
+   "flask_travis",
+   "flask_wtf",
+   "requests",
+   "sqlalchemy",
+   "wtforms"
+  ],
+  "physical_validation": false,
+  "public_routes": [],
+  "registrations_complete": true,
+  "release_allowed": false,
+  "schema": "assure.python-auth.declaration/v1",
+  "self_approved": false,
+  "session_identity_key": "user_id",
+  "signout_views": [
+   "app.auth.views.logout"
+  ],
+  "simulation": true,
+  "unconfirmed_libraries": [
+   "arrow",
+   "click",
+   "faker",
+   "flask_assets",
+   "flask_babel",
+   "flask_bcrypt",
+   "flask_limiter",
+   "flask_login",
+   "flask_mail",
+   "flask_migrate",
+   "flask_rq2",
+   "flask_sqlalchemy",
+   "flask_travis",
+   "flask_wtf",
+   "requests",
+   "sqlalchemy",
+   "wtforms"
+  ]
+ },
+ "schema": "assure.identity.declaration-proposal/v1",
+ "setup": {
+  "note": null,
+  "requirements": {
+   "path": "requirements.md",
+   "promises": [
+    {
+     "basis": "every route outside the declared public routes",
+     "establishes_at": "free",
+     "obligation": "AUTH-1",
+     "sentence": "No route outside the declared public routes is reachable without signing in."
+    },
+    {
+     "basis": "sign-out views: app.auth.views.logout",
+     "establishes_at": "free",
+     "obligation": "AUTH-4",
+     "sentence": "Signing out always returns to the signed-out state."
+    },
+    {
+     "basis": "sign-in guard login_required (session key user_id) on GET /logout",
+     "establishes_at": "premium",
+     "obligation": "route-sign-in",
+     "sentence": "Only a signed-in user can reach GET /logout."
+    }
+   ],
+   "text": "# What this app promises\n\n- R1 [auth]: No route outside the declared public routes is reachable without signing in.\n- R2 [auth]: Signing out always returns to the signed-out state.\n- R3 [auth]: Only a signed-in user can reach GET /logout.\n"
+  },
+  "workflow": {
+   "path": ".github/workflows/assure.yml",
+   "text": "name: Assure\n\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\npermissions:\n  contents: read\n  id-token: write\n  pull-requests: write\n\njobs:\n  assure:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5\n\n      - name: Set up Python 3.14\n        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6\n        with:\n          python-version: \"3.14\"\n\n      - name: Assure check\n        id: assure\n        uses: Symbolia-Assurance/assure-action@beta\n        with:\n          profile: python-auth-declared-model\n          requirements: requirements.md\n\n      - name: Keep the verdict\n        if: always()\n        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7\n        with:\n          name: assure-verdict\n          path: ${{ steps.assure.outputs.verdict-path }}\n"
+  }
+ },
+ "sources": {
+  "/app_objects/0/factory": "app/__init__.py:19",
+  "/app_objects/0/module": "app/__init__.py:19",
+  "/app_objects/0/name": "app/__init__.py:19",
+  "/app_objects/1/module": "app/auth/__init__.py:3",
+  "/app_objects/1/name": "app/auth/__init__.py:3",
+  "/app_objects/2/module": "app/user/__init__.py:3",
+  "/app_objects/2/name": "app/user/__init__.py:3",
+  "/app_roots/0": "app/__init__.py:19",
+  "/guards/0/decorator": "app/auth/views.py:37",
+  "/guards/0/definition": "app/auth/views.py:5",
+  "/guards/0/key": "requirements.txt:6",
+  "/guards/0/library/name": "app/auth/views.py:5",
+  "/guards/0/library/version": "requirements.txt:6",
+  "/guards/0/requires": "app/auth/views.py:5",
+  "/id": "unread",
+  "/identity_writers/0": "app/auth/views.py:24",
+  "/idiom": "app/__init__.py:19",
+  "/language": "app/__init__.py:19",
+  "/libraries/0": "app/__init__.py:4",
+  "/libraries/1": "app/commands.py:2",
+  "/libraries/10": "app/extensions.py:9",
+  "/libraries/11": "app/database.py:1",
+  "/libraries/12": "app/extensions.py:10",
+  "/libraries/13": "app/auth/forms.py:1",
+  "/libraries/14": "app/__init__.py:5",
+  "/libraries/15": "app/database.py:2",
+  "/libraries/16": "app/auth/forms.py:3",
+  "/libraries/2": "app/commands.py:1",
+  "/libraries/3": "app/assets.py:1",
+  "/libraries/4": "app/auth/forms.py:2",
+  "/libraries/5": "app/extensions.py:3",
+  "/libraries/6": "app/extensions.py:4",
+  "/libraries/7": "app/auth/views.py:5",
+  "/libraries/8": "app/extensions.py:7",
+  "/libraries/9": "app/extensions.py:8",
+  "/registrations_complete": "unread",
+  "/session_identity_key": "requirements.txt:6",
+  "/signout_views/0": "app/auth/views.py:40",
+  "/unconfirmed_libraries/0": "app/__init__.py:4",
+  "/unconfirmed_libraries/1": "app/commands.py:2",
+  "/unconfirmed_libraries/10": "app/extensions.py:9",
+  "/unconfirmed_libraries/11": "app/database.py:1",
+  "/unconfirmed_libraries/12": "app/extensions.py:10",
+  "/unconfirmed_libraries/13": "app/auth/forms.py:1",
+  "/unconfirmed_libraries/14": "app/__init__.py:5",
+  "/unconfirmed_libraries/15": "app/database.py:2",
+  "/unconfirmed_libraries/16": "app/auth/forms.py:3",
+  "/unconfirmed_libraries/2": "app/commands.py:1",
+  "/unconfirmed_libraries/3": "app/assets.py:1",
+  "/unconfirmed_libraries/4": "app/auth/forms.py:2",
+  "/unconfirmed_libraries/5": "app/extensions.py:3",
+  "/unconfirmed_libraries/6": "app/extensions.py:4",
+  "/unconfirmed_libraries/7": "app/auth/views.py:5",
+  "/unconfirmed_libraries/8": "app/extensions.py:7",
+  "/unconfirmed_libraries/9": "app/extensions.py:8"
+ },
+ "stack": "python/flask",
+ "to_confirm": [
+  {
+   "method": "GET",
+   "note": "/login checks something before it runs (`field = getattr(getattr(self.model, field), order)`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at app/database.py:101); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/login",
+   "source": "app/auth/views.py:20",
+   "where": "app/database.py:101"
+  },
+  {
+   "method": "POST",
+   "note": "/login checks something before it runs (`field = getattr(getattr(self.model, field), order)`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at app/database.py:101); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/login",
+   "source": "app/auth/views.py:20",
+   "where": "app/database.py:101"
+  },
+  {
+   "method": "GET",
+   "note": "/register checks something before it runs (`field = getattr(getattr(self.model, field), order)`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at app/database.py:101); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/register",
+   "source": "app/auth/views.py:45",
+   "where": "app/database.py:101"
+  },
+  {
+   "method": "POST",
+   "note": "/register checks something before it runs (`field = getattr(getattr(self.model, field), order)`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at app/database.py:101); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/register",
+   "source": "app/auth/views.py:45",
+   "where": "app/database.py:101"
+  },
+  {
+   "method": "GET",
+   "note": "/verify/{token} checks something before it runs (`field = getattr(getattr(self.model, field), order)`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at app/database.py:101); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/verify/{token}",
+   "source": "app/auth/views.py:74",
+   "where": "app/database.py:101"
+  },
+  {
+   "method": "GET",
+   "note": "/ checks something before it runs (`field = getattr(getattr(self.model, field), order)`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at app/database.py:101); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/",
+   "source": "app/__init__.py:42",
+   "where": "app/database.py:101"
+  }
+ ]
+}

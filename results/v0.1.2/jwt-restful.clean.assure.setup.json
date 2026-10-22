@@ -1,0 +1,176 @@
+{
+ "confirm": [
+  "/libraries/0",
+  "/libraries/1",
+  "/libraries/2",
+  "/libraries/3",
+  "/registrations_complete",
+  "/unconfirmed_libraries/0",
+  "/unconfirmed_libraries/1",
+  "/unconfirmed_libraries/2",
+  "/unconfirmed_libraries/3"
+ ],
+ "declaration": {
+  "app_objects": [
+   {
+    "module": "run",
+    "name": "app"
+   }
+  ],
+  "app_roots": [
+   "run.py",
+   "views.py",
+   "models.py",
+   "resources.py"
+  ],
+  "elevation_writers": [],
+  "execution_authorized": false,
+  "guards": [
+   {
+    "decorator": "jwt_required",
+    "definition": "flask_jwt_extended.jwt_required",
+    "key": "identity",
+    "library": {
+     "name": "flask_jwt_extended",
+     "version": "3.18.2"
+    },
+    "requires": "session_key_present"
+   },
+   {
+    "decorator": "jwt_refresh_token_required",
+    "definition": "flask_jwt_extended.jwt_refresh_token_required",
+    "key": "identity",
+    "library": {
+     "name": "flask_jwt_extended",
+     "version": "3.18.2"
+    },
+    "requires": "session_key_present"
+   }
+  ],
+  "hardware_authorized": false,
+  "id": "flask-cf99ff98081c",
+  "identity_writers": [
+   "resources.TokenRefresh.post",
+   "resources.UserLogin.post",
+   "resources.UserRegistration.post"
+  ],
+  "idiom": "flask-session-decorator",
+  "industrial_release_authorized": false,
+  "language": "python",
+  "libraries": [
+   "flask_jwt_extended",
+   "flask_restful",
+   "flask_sqlalchemy",
+   "passlib"
+  ],
+  "physical_validation": false,
+  "public_routes": [],
+  "registrations_complete": true,
+  "release_allowed": false,
+  "schema": "assure.python-auth.declaration/v1",
+  "self_approved": false,
+  "session_identity_key": "identity",
+  "signout_views": [],
+  "simulation": true,
+  "unconfirmed_libraries": [
+   "flask_jwt_extended",
+   "flask_restful",
+   "flask_sqlalchemy",
+   "passlib"
+  ]
+ },
+ "schema": "assure.identity.declaration-proposal/v1",
+ "setup": {
+  "note": null,
+  "requirements": {
+   "path": "requirements.md",
+   "promises": [
+    {
+     "basis": "every route outside the declared public routes",
+     "establishes_at": "free",
+     "obligation": "AUTH-1",
+     "sentence": "No route outside the declared public routes is reachable without signing in."
+    }
+   ],
+   "text": "# What this app promises\n\n- R1 [auth]: No route outside the declared public routes is reachable without signing in.\n"
+  },
+  "workflow": {
+   "path": ".github/workflows/assure.yml",
+   "text": "name: Assure\n\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\npermissions:\n  contents: read\n  id-token: write\n  pull-requests: write\n\njobs:\n  assure:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5\n\n      - name: Set up Python 3.14\n        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6\n        with:\n          python-version: \"3.14\"\n\n      - name: Assure check\n        id: assure\n        uses: Symbolia-Assurance/assure-action@beta\n        with:\n          profile: python-auth-declared-model\n          requirements: requirements.md\n\n      - name: Keep the verdict\n        if: always()\n        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7\n        with:\n          name: assure-verdict\n          path: ${{ steps.assure.outputs.verdict-path }}\n"
+  }
+ },
+ "sources": {
+  "/app_objects/0/module": "run.py:6",
+  "/app_objects/0/name": "run.py:6",
+  "/app_roots/0": "run.py:6",
+  "/app_roots/1": "run.py:6",
+  "/app_roots/2": "run.py:6",
+  "/app_roots/3": "run.py:6",
+  "/guards/0/decorator": "run.py:34",
+  "/guards/0/definition": "resources.py:3",
+  "/guards/0/key": "requirements.txt:2",
+  "/guards/0/library/name": "resources.py:3",
+  "/guards/0/library/version": "requirements.txt:2",
+  "/guards/0/requires": "resources.py:3",
+  "/guards/1/decorator": "run.py:35",
+  "/guards/1/definition": "resources.py:3",
+  "/guards/1/key": "requirements.txt:2",
+  "/guards/1/library/name": "resources.py:3",
+  "/guards/1/library/version": "requirements.txt:2",
+  "/guards/1/requires": "resources.py:3",
+  "/id": "unread",
+  "/identity_writers/0": "resources.py:83",
+  "/identity_writers/1": "resources.py:44",
+  "/identity_writers/2": "resources.py:24",
+  "/idiom": "run.py:6",
+  "/language": "run.py:6",
+  "/libraries/0": "resources.py:3",
+  "/libraries/1": "resources.py:1",
+  "/libraries/2": "run.py:3",
+  "/libraries/3": "models.py:2",
+  "/registrations_complete": "unread",
+  "/session_identity_key": "requirements.txt:2",
+  "/unconfirmed_libraries/0": "resources.py:3",
+  "/unconfirmed_libraries/1": "resources.py:1",
+  "/unconfirmed_libraries/2": "run.py:3",
+  "/unconfirmed_libraries/3": "models.py:2"
+ },
+ "stack": "python/flask",
+ "to_confirm": [
+  {
+   "method": "GET",
+   "note": "/ checks something before it runs (`db.create_all()`, in the before_first_request hook run.create_tables at run.py:16); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/",
+   "source": "views.py:4",
+   "where": "run.py:15"
+  },
+  {
+   "method": "POST",
+   "note": "/registration checks something before it runs (`db.create_all()`, in the before_first_request hook run.create_tables at run.py:16); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/registration",
+   "source": "run.py:32",
+   "where": "run.py:15"
+  },
+  {
+   "method": "POST",
+   "note": "/login checks something before it runs (`db.create_all()`, in the before_first_request hook run.create_tables at run.py:16); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/login",
+   "source": "run.py:33",
+   "where": "run.py:15"
+  },
+  {
+   "method": "GET",
+   "note": "/users checks something before it runs (`db.create_all()`, in the before_first_request hook run.create_tables at run.py:16); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/users",
+   "source": "run.py:37",
+   "where": "run.py:15"
+  },
+  {
+   "method": "DELETE",
+   "note": "/users checks something before it runs (`db.create_all()`, in the before_first_request hook run.create_tables at run.py:16); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/users",
+   "source": "run.py:37",
+   "where": "run.py:15"
+  }
+ ]
+}

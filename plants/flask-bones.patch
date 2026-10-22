@@ -1,0 +1,10 @@
+diff --git a/app/user/views.py b/app/user/views.py
+index 737d3d9..aeb2ae1 100644
+--- a/app/user/views.py
++++ b/app/user/views.py
+@@ -55,0 +56,5 @@ def delete(id):
++
++
++@user.route('/export', methods=['GET'])
++def export():
++    return {'users': [{'username': u.username, 'email': u.email} for u in User.query.all()]}

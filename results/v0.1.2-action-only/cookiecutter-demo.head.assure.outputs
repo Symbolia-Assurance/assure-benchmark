@@ -1,0 +1,10 @@
+verdict-path=<run>/out/cookiecutter-demo.head.assure.json
+outcome=no_verdict
+exit-code=3
+colour=yellow
+not-established=6
+report-status=refused
+report-url=
+report-cost-usd=
+report-charge-usd=
+report-allowance-remaining=

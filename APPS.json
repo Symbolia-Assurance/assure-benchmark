@@ -1,0 +1,497 @@
+{
+  "schema": "assure-benchmark.apps/v1",
+  "apps": [
+    {
+      "slug": "microblog",
+      "upstream": "https://github.com/miguelgrinberg/microblog",
+      "commit": "a975ef64864354867c88e0ed3a17ba7d17dca752",
+      "license": "MIT",
+      "copy": {},
+      "plant": {
+        "title": "Add an export of all posts",
+        "route": "/export_all_posts",
+        "patch": "plants/microblog.patch",
+        "flaw": "the new route returns data to anyone: it has no sign-in check while the app's other data routes do"
+      },
+      "public_routes": [
+        {
+          "method": "GET",
+          "path": "/auth/login"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/login"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/logout"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/logout"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/register"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/register"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/reset_password_request"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/reset_password_request"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/reset_password/<token>"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/reset_password/<token>"
+        },
+        {
+          "method": "POST",
+          "path": "/api/users"
+        },
+        {
+          "method": "POST",
+          "path": "/api/tokens"
+        }
+      ]
+    },
+    {
+      "slug": "flasky",
+      "upstream": "https://github.com/miguelgrinberg/flasky",
+      "commit": "3beedd640b9146b0bd65c8c2ecf402b01798bc33",
+      "license": "MIT",
+      "copy": {},
+      "plant": {
+        "title": "Add a list of all users",
+        "route": "/all-users",
+        "patch": "plants/flasky.patch",
+        "flaw": "the new route returns data to anyone: it has no sign-in check while the app's other data routes do"
+      },
+      "public_routes": [
+        {
+          "method": "GET",
+          "path": "/"
+        },
+        {
+          "method": "POST",
+          "path": "/"
+        },
+        {
+          "method": "GET",
+          "path": "/user/<username>"
+        },
+        {
+          "method": "POST",
+          "path": "/user/<username>"
+        },
+        {
+          "method": "GET",
+          "path": "/post/<int:id>"
+        },
+        {
+          "method": "POST",
+          "path": "/post/<int:id>"
+        },
+        {
+          "method": "GET",
+          "path": "/followers/<username>"
+        },
+        {
+          "method": "POST",
+          "path": "/followers/<username>"
+        },
+        {
+          "method": "GET",
+          "path": "/followed_by/<username>"
+        },
+        {
+          "method": "POST",
+          "path": "/followed_by/<username>"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/login"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/login"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/register"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/register"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/reset"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/reset"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/reset/<token>"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/reset/<token>"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/unconfirmed"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/unconfirmed"
+        }
+      ]
+    },
+    {
+      "slug": "flask-base",
+      "upstream": "https://github.com/hack4impact/flask-base",
+      "commit": "811fda1cb350ff7881829914c95cb2b10fbe7525",
+      "license": "MIT",
+      "copy": {},
+      "plant": {
+        "title": "Add a user export for admins",
+        "route": "/users/export",
+        "patch": "plants/flask-base.patch",
+        "flaw": "the new route returns data to anyone: it has no sign-in check while the app's other data routes do"
+      },
+      "public_routes": [
+        {
+          "method": "GET",
+          "path": "/"
+        },
+        {
+          "method": "POST",
+          "path": "/"
+        },
+        {
+          "method": "GET",
+          "path": "/about"
+        },
+        {
+          "method": "POST",
+          "path": "/about"
+        },
+        {
+          "method": "GET",
+          "path": "/account/login"
+        },
+        {
+          "method": "POST",
+          "path": "/account/login"
+        },
+        {
+          "method": "GET",
+          "path": "/account/register"
+        },
+        {
+          "method": "POST",
+          "path": "/account/register"
+        },
+        {
+          "method": "GET",
+          "path": "/account/reset-password"
+        },
+        {
+          "method": "POST",
+          "path": "/account/reset-password"
+        },
+        {
+          "method": "GET",
+          "path": "/account/reset-password/<token>"
+        },
+        {
+          "method": "POST",
+          "path": "/account/reset-password/<token>"
+        },
+        {
+          "method": "GET",
+          "path": "/account/join-from-invite/<int:user_id>/<token>"
+        },
+        {
+          "method": "POST",
+          "path": "/account/join-from-invite/<int:user_id>/<token>"
+        }
+      ]
+    },
+    {
+      "slug": "realworld",
+      "upstream": "https://github.com/gothinkster/flask-realworld-example-app",
+      "commit": "4b95fb2227dfeb5dd1a45d89b2bf48630b93fd28",
+      "license": "MIT",
+      "copy": {},
+      "plant": {
+        "title": "Add a user export endpoint",
+        "route": "/api/users/export",
+        "patch": "plants/realworld.patch",
+        "flaw": "the new route returns data to anyone: it has no sign-in check while the app's other data routes do"
+      },
+      "public_routes": [
+        {
+          "method": "POST",
+          "path": "/api/users"
+        },
+        {
+          "method": "POST",
+          "path": "/api/users/login"
+        },
+        {
+          "method": "GET",
+          "path": "/api/articles"
+        },
+        {
+          "method": "GET",
+          "path": "/api/articles/<slug>"
+        },
+        {
+          "method": "GET",
+          "path": "/api/tags"
+        },
+        {
+          "method": "GET",
+          "path": "/api/articles/<slug>/comments"
+        },
+        {
+          "method": "GET",
+          "path": "/api/profiles/<username>"
+        }
+      ]
+    },
+    {
+      "slug": "flask-user-starter",
+      "upstream": "https://github.com/lingthio/Flask-User-starter-app",
+      "commit": "9d97fc2b72369241efae02e9d91880fbde083b27",
+      "license": "BSD-2-Clause",
+      "copy": {},
+      "plant": {
+        "title": "Add an admin overview page",
+        "route": "/admin/overview",
+        "patch": "plants/flask-user-starter.patch",
+        "flaw": "the new route returns data to anyone: it has no sign-in check while the app's other data routes do"
+      },
+      "public_routes": [
+        {
+          "method": "GET",
+          "path": "/"
+        },
+        {
+          "method": "POST",
+          "path": "/"
+        }
+      ]
+    },
+    {
+      "slug": "cookiecutter-demo",
+      "upstream": "https://github.com/jamescurtin/demo-cookiecutter-flask",
+      "commit": "afae7e9c7d89c6cf04a0e6f908e7792708eab635",
+      "license": "MIT",
+      "copy": {},
+      "plant": {
+        "title": "Add a page listing all members",
+        "route": "/all/",
+        "patch": "plants/cookiecutter-demo.patch",
+        "flaw": "the new route returns data to anyone: it has no sign-in check while the app's other data routes do"
+      },
+      "public_routes": [
+        {
+          "method": "GET",
+          "path": "/"
+        },
+        {
+          "method": "POST",
+          "path": "/"
+        },
+        {
+          "method": "GET",
+          "path": "/register/"
+        },
+        {
+          "method": "POST",
+          "path": "/register/"
+        },
+        {
+          "method": "GET",
+          "path": "/about/"
+        },
+        {
+          "method": "POST",
+          "path": "/about/"
+        }
+      ]
+    },
+    {
+      "slug": "jwt-restful",
+      "upstream": "https://github.com/oleg-agapov/flask-jwt-auth",
+      "commit": "d68bb2522f9d71764bd2e67f9939bd7119859f20",
+      "license": "MIT",
+      "copy": {
+        "include": [
+          "run.py",
+          "models.py",
+          "resources.py",
+          "views.py",
+          "requirements.txt",
+          "README.md",
+          "LICENSE"
+        ],
+        "why": "the final app only; step_1..step_5 are tutorial snapshots of the same app and app.db is a SQLite file"
+      },
+      "plant": {
+        "title": "Add a user export resource",
+        "route": "/users/export",
+        "patch": "plants/jwt-restful.patch",
+        "flaw": "the new route returns data to anyone: it has no sign-in check while the app's other data routes do"
+      },
+      "public_routes": [
+        {
+          "method": "GET",
+          "path": "/"
+        },
+        {
+          "method": "POST",
+          "path": "/"
+        },
+        {
+          "method": "POST",
+          "path": "/registration"
+        },
+        {
+          "method": "POST",
+          "path": "/login"
+        }
+      ]
+    },
+    {
+      "slug": "rest-tutorial",
+      "upstream": "https://github.com/miguelgrinberg/REST-tutorial",
+      "commit": "eefcd127cf41d90f05919f0fd6f6ce20b48eb561",
+      "license": "MIT",
+      "copy": {},
+      "plant": {
+        "title": "Add a task export resource",
+        "route": "/todo/api/v1.0/tasks/export",
+        "patch": "plants/rest-tutorial.patch",
+        "flaw": "the new route returns data to anyone: it has no sign-in check while the app's other data routes do"
+      },
+      "public_routes": []
+    },
+    {
+      "slug": "flaskr",
+      "upstream": "https://github.com/pallets/flask/tree/main/examples/tutorial",
+      "commit": "d086db856be187255b8ec61ef409357393020f32",
+      "license": "BSD-3-Clause",
+      "copy": {
+        "subdir": "examples/tutorial",
+        "why": "the Flask tutorial app (flaskr) with its own LICENSE.txt"
+      },
+      "plant": {
+        "title": "Add an export of all posts",
+        "route": "/export",
+        "patch": "plants/flaskr.patch",
+        "flaw": "the new route returns data to anyone: it has no sign-in check while the app's other data routes do"
+      },
+      "public_routes": [
+        {
+          "method": "GET",
+          "path": "/"
+        },
+        {
+          "method": "POST",
+          "path": "/"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/register"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/register"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/login"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/login"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/logout"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/logout"
+        },
+        {
+          "method": "GET",
+          "path": "/hello"
+        }
+      ]
+    },
+    {
+      "slug": "flask-bones",
+      "upstream": "https://github.com/cburmeister/flask-bones",
+      "commit": "bc61f5c12b50e366df605462ba227f5efc03bc1b",
+      "license": "MIT",
+      "copy": {},
+      "plant": {
+        "title": "Add a user export",
+        "route": "/export",
+        "patch": "plants/flask-bones.patch",
+        "flaw": "the new route returns data to anyone: it has no sign-in check while the app's other data routes do"
+      },
+      "public_routes": [
+        {
+          "method": "GET",
+          "path": "/"
+        },
+        {
+          "method": "POST",
+          "path": "/"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/login"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/login"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/register"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/register"
+        },
+        {
+          "method": "GET",
+          "path": "/auth/verify/<token>"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/verify/<token>"
+        }
+      ]
+    }
+  ],
+  "about_public_routes": "The routes each app serves to anyone by design: the answer the setup agent asks the customer for (Assure never guesses it). Taken from the upstream apps; written into the declaration before the check."
+}

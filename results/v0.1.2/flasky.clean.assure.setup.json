@@ -1,0 +1,446 @@
+{
+ "confirm": [
+  "/guards/1/role",
+  "/libraries/0",
+  "/libraries/1",
+  "/libraries/2",
+  "/libraries/3",
+  "/libraries/4",
+  "/libraries/5",
+  "/libraries/6",
+  "/libraries/7",
+  "/libraries/8",
+  "/libraries/9",
+  "/libraries/10",
+  "/libraries/11",
+  "/libraries/12",
+  "/libraries/13",
+  "/registrations_complete",
+  "/unconfirmed_libraries/0",
+  "/unconfirmed_libraries/1",
+  "/unconfirmed_libraries/2",
+  "/unconfirmed_libraries/3",
+  "/unconfirmed_libraries/4",
+  "/unconfirmed_libraries/5",
+  "/unconfirmed_libraries/6",
+  "/unconfirmed_libraries/7",
+  "/unconfirmed_libraries/8",
+  "/unconfirmed_libraries/9",
+  "/unconfirmed_libraries/10",
+  "/unconfirmed_libraries/11",
+  "/unconfirmed_libraries/12",
+  "/unconfirmed_libraries/13"
+ ],
+ "declaration": {
+  "app_objects": [
+   {
+    "factory": "create_app",
+    "module": "app",
+    "name": "app"
+   },
+   {
+    "module": "app.api",
+    "name": "api"
+   },
+   {
+    "module": "app.auth",
+    "name": "auth"
+   },
+   {
+    "module": "app.main",
+    "name": "main"
+   }
+  ],
+  "app_roots": [
+   "app",
+   "config.py"
+  ],
+  "elevation_writers": [],
+  "execution_authorized": false,
+  "guards": [
+   {
+    "decorator": "login_required",
+    "definition": "flask_login.login_required",
+    "key": "user_id",
+    "library": {
+     "name": "flask_login",
+     "version": "0.4.0"
+    },
+    "requires": "session_key_present"
+   },
+   {
+    "decorator": "admin_required",
+    "definition": "app.decorators.admin_required",
+    "requires": "actor_role",
+    "role": "administrator"
+   },
+   {
+    "decorator": "auth.login_required",
+    "definition": "app.api.authentication.auth",
+    "library": {
+     "name": "flask_httpauth",
+     "version": "3.2.3"
+    },
+    "requires": "request_credentials"
+   }
+  ],
+  "hardware_authorized": false,
+  "id": "flask-602d1f6f4f54",
+  "identity_writers": [
+   "app.auth.views.login"
+  ],
+  "idiom": "flask-session-decorator",
+  "industrial_release_authorized": false,
+  "language": "python",
+  "libraries": [
+   "bleach",
+   "faker",
+   "flask_bootstrap",
+   "flask_httpauth",
+   "flask_login",
+   "flask_mail",
+   "flask_moment",
+   "flask_pagedown",
+   "flask_sqlalchemy",
+   "flask_sslify",
+   "flask_wtf",
+   "markdown",
+   "sqlalchemy",
+   "wtforms"
+  ],
+  "physical_validation": false,
+  "public_routes": [],
+  "registrations_complete": true,
+  "release_allowed": false,
+  "schema": "assure.python-auth.declaration/v1",
+  "self_approved": false,
+  "session_identity_key": "user_id",
+  "signout_views": [
+   "app.auth.views.logout"
+  ],
+  "simulation": true,
+  "unconfirmed_libraries": [
+   "bleach",
+   "faker",
+   "flask_bootstrap",
+   "flask_httpauth",
+   "flask_login",
+   "flask_mail",
+   "flask_moment",
+   "flask_pagedown",
+   "flask_sqlalchemy",
+   "flask_sslify",
+   "flask_wtf",
+   "markdown",
+   "sqlalchemy",
+   "wtforms"
+  ]
+ },
+ "schema": "assure.identity.declaration-proposal/v1",
+ "setup": {
+  "note": null,
+  "requirements": {
+   "path": "requirements.md",
+   "promises": [
+    {
+     "basis": "every route outside the declared public routes",
+     "establishes_at": "free",
+     "obligation": "AUTH-1",
+     "sentence": "No route outside the declared public routes is reachable without signing in."
+    },
+    {
+     "basis": "role guards: administrator",
+     "establishes_at": "free",
+     "obligation": "AUTH-2",
+     "sentence": "Routes that carry a declared role guard are reachable only by that role."
+    },
+    {
+     "basis": "sign-out views: app.auth.views.logout",
+     "establishes_at": "free",
+     "obligation": "AUTH-4",
+     "sentence": "Signing out always returns to the signed-out state."
+    },
+    {
+     "basis": "sign-in guard login_required (session key user_id) on GET /auth/logout",
+     "establishes_at": "premium",
+     "obligation": "route-sign-in",
+     "sentence": "Only a signed-in user can reach GET /auth/logout."
+    }
+   ],
+   "text": "# What this app promises\n\n- R1 [auth]: No route outside the declared public routes is reachable without signing in.\n- R2 [auth]: Routes that carry a declared role guard are reachable only by that role.\n- R3 [auth]: Signing out always returns to the signed-out state.\n- R4 [auth]: Only a signed-in user can reach GET /auth/logout.\n"
+  },
+  "workflow": {
+   "path": ".github/workflows/assure.yml",
+   "text": "name: Assure\n\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\npermissions:\n  contents: read\n  id-token: write\n  pull-requests: write\n\njobs:\n  assure:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5\n\n      - name: Set up Python 3.14\n        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6\n        with:\n          python-version: \"3.14\"\n\n      - name: Assure check\n        id: assure\n        uses: Symbolia-Assurance/assure-action@beta\n        with:\n          profile: python-auth-declared-model\n          requirements: requirements.md\n\n      - name: Keep the verdict\n        if: always()\n        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7\n        with:\n          name: assure-verdict\n          path: ${{ steps.assure.outputs.verdict-path }}\n"
+  }
+ },
+ "sources": {
+  "/app_objects/0/factory": "app/__init__.py:21",
+  "/app_objects/0/module": "app/__init__.py:21",
+  "/app_objects/0/name": "app/__init__.py:21",
+  "/app_objects/1/module": "app/api/__init__.py:3",
+  "/app_objects/1/name": "app/api/__init__.py:3",
+  "/app_objects/2/module": "app/auth/__init__.py:3",
+  "/app_objects/2/name": "app/auth/__init__.py:3",
+  "/app_objects/3/module": "app/main/__init__.py:3",
+  "/app_objects/3/name": "app/main/__init__.py:3",
+  "/app_roots/0": "app/__init__.py:21",
+  "/app_roots/1": "config.py:119",
+  "/guards/0/decorator": "app/auth/views.py:45",
+  "/guards/0/definition": "app/auth/views.py:2",
+  "/guards/0/key": "requirements/common.txt:9",
+  "/guards/0/library/name": "app/auth/views.py:2",
+  "/guards/0/library/version": "requirements/common.txt:9",
+  "/guards/0/requires": "app/auth/views.py:2",
+  "/guards/1/decorator": "app/main/views.py:90",
+  "/guards/1/definition": "app/decorators.py:18",
+  "/guards/1/requires": "app/decorators.py:18",
+  "/guards/1/role": "app/decorators.py:18",
+  "/guards/2/decorator": "app/api/authentication.py:33",
+  "/guards/2/definition": "app/api/authentication.py:7",
+  "/guards/2/library/name": "app/api/authentication.py:7",
+  "/guards/2/library/version": "requirements/common.txt:8",
+  "/guards/2/requires": "app/api/authentication.py:7",
+  "/id": "unread",
+  "/identity_writers/0": "app/auth/views.py:36",
+  "/idiom": "app/__init__.py:21",
+  "/language": "app/__init__.py:21",
+  "/libraries/0": "app/models.py:6",
+  "/libraries/1": "app/fake.py:3",
+  "/libraries/10": "app/auth/forms.py:1",
+  "/libraries/11": "app/models.py:5",
+  "/libraries/12": "app/fake.py:2",
+  "/libraries/13": "app/auth/forms.py:2",
+  "/libraries/2": "app/__init__.py:2",
+  "/libraries/3": "app/api/authentication.py:2",
+  "/libraries/4": "app/__init__.py:6",
+  "/libraries/5": "app/__init__.py:3",
+  "/libraries/6": "app/__init__.py:4",
+  "/libraries/7": "app/__init__.py:7",
+  "/libraries/8": "app/__init__.py:5",
+  "/libraries/9": "app/__init__.py:33",
+  "/registrations_complete": "unread",
+  "/session_identity_key": "requirements/common.txt:9",
+  "/signout_views/0": "app/auth/views.py:48",
+  "/unconfirmed_libraries/0": "app/models.py:6",
+  "/unconfirmed_libraries/1": "app/fake.py:3",
+  "/unconfirmed_libraries/10": "app/auth/forms.py:1",
+  "/unconfirmed_libraries/11": "app/models.py:5",
+  "/unconfirmed_libraries/12": "app/fake.py:2",
+  "/unconfirmed_libraries/13": "app/auth/forms.py:2",
+  "/unconfirmed_libraries/2": "app/__init__.py:2",
+  "/unconfirmed_libraries/3": "app/api/authentication.py:2",
+  "/unconfirmed_libraries/4": "app/__init__.py:6",
+  "/unconfirmed_libraries/5": "app/__init__.py:3",
+  "/unconfirmed_libraries/6": "app/__init__.py:4",
+  "/unconfirmed_libraries/7": "app/__init__.py:7",
+  "/unconfirmed_libraries/8": "app/__init__.py:5",
+  "/unconfirmed_libraries/9": "app/__init__.py:33"
+ },
+ "stack": "python/flask",
+ "to_confirm": [
+  {
+   "method": "POST",
+   "note": "/api/v1/tokens/ checks something before it runs (`not g.current_user.is_anonymous and \\ not g.current_user.confirmed`, in the before_request hook app.api.authentication.before_request at app/api/authentication.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/tokens/",
+   "source": "app/api/authentication.py:39",
+   "where": "app/api/authentication.py:31"
+  },
+  {
+   "method": "GET",
+   "note": "/api/v1/comments/ checks something before it runs (`not g.current_user.is_anonymous and \\ not g.current_user.confirmed`, in the before_request hook app.api.authentication.before_request at app/api/authentication.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/comments/",
+   "source": "app/api/comments.py:8",
+   "where": "app/api/authentication.py:31"
+  },
+  {
+   "method": "GET",
+   "note": "/api/v1/comments/{id} checks something before it runs (`not g.current_user.is_anonymous and \\ not g.current_user.confirmed`, in the before_request hook app.api.authentication.before_request at app/api/authentication.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/comments/{id}",
+   "source": "app/api/comments.py:29",
+   "where": "app/api/authentication.py:31"
+  },
+  {
+   "method": "GET",
+   "note": "/api/v1/posts/{id}/comments/ checks something before it runs (`not g.current_user.is_anonymous and \\ not g.current_user.confirmed`, in the before_request hook app.api.authentication.before_request at app/api/authentication.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/posts/{id}/comments/",
+   "source": "app/api/comments.py:35",
+   "where": "app/api/authentication.py:31"
+  },
+  {
+   "method": "POST",
+   "note": "/api/v1/posts/{id}/comments/ checks something before it runs (`not g.current_user.can(permission)`, in the decorator permission_required at app/api/comments.py:58); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/posts/{id}/comments/",
+   "source": "app/api/comments.py:57",
+   "where": "app/api/comments.py:58"
+  },
+  {
+   "method": "GET",
+   "note": "/api/v1/posts/ checks something before it runs (`not g.current_user.is_anonymous and \\ not g.current_user.confirmed`, in the before_request hook app.api.authentication.before_request at app/api/authentication.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/posts/",
+   "source": "app/api/posts.py:9",
+   "where": "app/api/authentication.py:31"
+  },
+  {
+   "method": "GET",
+   "note": "/api/v1/posts/{id} checks something before it runs (`not g.current_user.is_anonymous and \\ not g.current_user.confirmed`, in the before_request hook app.api.authentication.before_request at app/api/authentication.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/posts/{id}",
+   "source": "app/api/posts.py:30",
+   "where": "app/api/authentication.py:31"
+  },
+  {
+   "method": "POST",
+   "note": "/api/v1/posts/ checks something before it runs (`not g.current_user.can(permission)`, in the decorator permission_required at app/api/posts.py:37); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/posts/",
+   "source": "app/api/posts.py:36",
+   "where": "app/api/posts.py:37"
+  },
+  {
+   "method": "PUT",
+   "note": "/api/v1/posts/{id} checks something before it runs (`not g.current_user.can(permission)`, in the decorator permission_required at app/api/posts.py:48); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/posts/{id}",
+   "source": "app/api/posts.py:47",
+   "where": "app/api/posts.py:48"
+  },
+  {
+   "method": "GET",
+   "note": "/api/v1/users/{id} checks something before it runs (`not g.current_user.is_anonymous and \\ not g.current_user.confirmed`, in the before_request hook app.api.authentication.before_request at app/api/authentication.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/users/{id}",
+   "source": "app/api/users.py:6",
+   "where": "app/api/authentication.py:31"
+  },
+  {
+   "method": "GET",
+   "note": "/api/v1/users/{id}/posts/ checks something before it runs (`not g.current_user.is_anonymous and \\ not g.current_user.confirmed`, in the before_request hook app.api.authentication.before_request at app/api/authentication.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/users/{id}/posts/",
+   "source": "app/api/users.py:12",
+   "where": "app/api/authentication.py:31"
+  },
+  {
+   "method": "GET",
+   "note": "/api/v1/users/{id}/timeline/ checks something before it runs (`not g.current_user.is_anonymous and \\ not g.current_user.confirmed`, in the before_request hook app.api.authentication.before_request at app/api/authentication.py:33); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/v1/users/{id}/timeline/",
+   "source": "app/api/users.py:34",
+   "where": "app/api/authentication.py:31"
+  },
+  {
+   "method": "GET",
+   "note": "/auth/unconfirmed checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/unconfirmed",
+   "source": "app/auth/views.py:23",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "GET",
+   "note": "/auth/login checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/login",
+   "source": "app/auth/views.py:30",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "POST",
+   "note": "/auth/login checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/login",
+   "source": "app/auth/views.py:30",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "GET",
+   "note": "/auth/register checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/register",
+   "source": "app/auth/views.py:53",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "POST",
+   "note": "/auth/register checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/register",
+   "source": "app/auth/views.py:53",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "GET",
+   "note": "/auth/reset checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/reset",
+   "source": "app/auth/views.py:109",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "POST",
+   "note": "/auth/reset checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/reset",
+   "source": "app/auth/views.py:109",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "GET",
+   "note": "/auth/reset/{token} checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/reset/{token}",
+   "source": "app/auth/views.py:127",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "POST",
+   "note": "/auth/reset/{token} checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/auth/reset/{token}",
+   "source": "app/auth/views.py:127",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "GET",
+   "note": "/shutdown checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/shutdown",
+   "source": "app/main/views.py:24",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "GET",
+   "note": "/ checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/",
+   "source": "app/main/views.py:35",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "POST",
+   "note": "/ checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/",
+   "source": "app/main/views.py:35",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "GET",
+   "note": "/user/{username} checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/user/{username}",
+   "source": "app/main/views.py:60",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "GET",
+   "note": "/post/{id} checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/post/{id}",
+   "source": "app/main/views.py:118",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "POST",
+   "note": "/post/{id} checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/post/{id}",
+   "source": "app/main/views.py:118",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "GET",
+   "note": "/followers/{username} checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/followers/{username}",
+   "source": "app/main/views.py:194",
+   "where": "app/auth/views.py:12"
+  },
+  {
+   "method": "GET",
+   "note": "/followed_by/{username} checks something before it runs (`current_user.is_authenticated`, in the before_app_request hook app.auth.views.before_request at app/auth/views.py:13); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/followed_by/{username}",
+   "source": "app/main/views.py:211",
+   "where": "app/auth/views.py:12"
+  }
+ ]
+}

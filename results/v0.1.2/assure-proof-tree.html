@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Assure proof tree</title>
+<style>:root{--bg:#fbfaf8;--ink:#1d1c1a;--muted:#7a746b;--faint:#b3ada3;--line:#ebe7e0;--code-bg:#efece6;
+--accent:#2f5d8a;--holds:#6f7d63;--ne:#8a7650;--dis:#9b3b34;
+--font-text:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+--font-display:ui-serif,"New York",Georgia,"Times New Roman",serif;
+--font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+--measure:520px;--size-body:15px;--size-title:34px;--size-root:22px;--size-h2:19px;--size-small:13.5px;
+--size-label:12.5px;--size-code:12px;--size-body-sm:15px;--size-title-sm:29px}
+@media (prefers-color-scheme: dark){:root{--bg:#141412;--ink:#ece9e3;--muted:#9c968c;--faint:#5f5a53;--line:#2a2825;
+--code-bg:#26241f;--accent:#8fb4dc;--holds:#a3b296;--ne:#c9b07e;--dis:#e0918a}}
+*{box-sizing:border-box}html,body{margin:0}
+body{overflow-wrap:anywhere;background-color:var(--bg);color:var(--ink);font-family:var(--font-text);
+font-size:var(--size-body);line-height:1.65;-webkit-font-smoothing:antialiased}
+main{max-width:var(--measure);margin:0 auto;padding:56px 16px 72px}
+h1{font-family:var(--font-display);font-size:var(--size-title);line-height:1.2;margin:0 0 12px;font-weight:300}
+.lede{color:var(--muted);margin:0}
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin:18px 0 0}.legend .w{min-width:0}
+.tools{display:flex;gap:18px;margin:28px 0 0;font-size:var(--size-label)}
+.tools a{color:var(--muted)}.tools a:hover{color:var(--accent);text-decoration:none}
+header{margin-bottom:56px}
+section{border-top:1px solid var(--line);padding:32px 0 0;margin-bottom:48px}
+section h2{font-family:var(--font-display);font-size:var(--size-h2);font-weight:400;margin:0 0 20px}
+.root .t{font-family:var(--font-display);font-size:var(--size-root);font-weight:300;line-height:1.3}
+.sum{color:var(--muted);margin:6px 0 0;font-size:var(--size-small)}
+.row{display:flex;align-items:baseline;column-gap:16px;flex-wrap:wrap}
+.row .t{flex:1 1 60%;order:1}.row .w{order:2;margin-left:auto}.row .tag{order:3;flex-basis:100%}
+.w{flex:none;font-size:var(--size-small);white-space:nowrap}
+.w-holds{color:var(--holds)}.w-not_established{color:var(--ne)}.w-disproven{color:var(--dis)}
+.t{overflow-wrap:anywhere;min-width:0}
+.tag{color:var(--faint);font-family:var(--font-mono);font-size:var(--size-label)}
+.roll{color:var(--muted);font-size:var(--size-small)}
+ul{list-style:none;margin:0;padding:0}
+ul.tree{margin:12px 0 0}
+ul.tree>li{padding:12px 0;border-top:1px solid var(--line)}ul.tree>li:first-child{border-top:0}
+ul.tree ul.tree{margin:4px 0 8px 3px;padding-left:16px;border-left:1px solid var(--line)}
+ul.tree ul.tree>li{padding:9px 0;font-size:var(--size-small)}
+details>summary{cursor:pointer;list-style:none;position:relative;padding-left:18px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:'';position:absolute;left:0;top:.62em;width:6px;height:6px;
+border-right:1px solid var(--faint);border-bottom:1px solid var(--faint);transform:rotate(-45deg)}
+details[open]>summary::before{transform:rotate(45deg)}
+details>summary:hover .t,details>summary:hover .roll{color:var(--accent)}
+details>summary:focus-visible{outline:1px solid var(--accent);outline-offset:4px}
+details[open]>summary{margin-bottom:6px}
+main:has(#expand-all:target) details::details-content{content-visibility:visible}
+main:has(#expand-all:target) details>summary::before{transform:rotate(45deg)}
+ul.ev{margin:4px 0 4px 18px;padding-left:16px;border-left:1px solid var(--line);color:var(--muted);
+font-size:var(--size-small)}ul.ev li{padding:3px 0}
+ul.ev b{color:var(--ink);font-weight:500}
+li.n-disproven>details>summary .t,li.n-disproven>.row .t{color:var(--ink)}
+code{font-family:var(--font-mono);font-size:var(--size-code);background-color:var(--code-bg);color:var(--ink);
+padding:1px 6px;border-radius:3px;overflow-wrap:anywhere}
+a{color:var(--accent);text-decoration:none}a code{color:var(--accent)}a:hover{text-decoration:underline;text-underline-offset:3px}
+a:focus-visible{outline:1px solid var(--accent);outline-offset:3px}
+q{color:var(--ink)}
+.note{color:var(--muted);font-size:var(--size-small);margin:20px 0 0}
+dl.facts{display:grid;grid-template-columns:max-content 1fr;gap:6px 20px;margin:0;font-size:var(--size-small)}
+dl.facts dt{color:var(--muted)}dl.facts dd{margin:0;overflow-wrap:anywhere}
+footer{color:var(--faint);font-size:var(--size-label);padding-top:20px;border-top:1px solid var(--line)}
+.l2-drifted ul.tree{opacity:.55}
+.remodel{border-top:1px solid var(--line);margin-top:24px;padding-top:18px;font-size:var(--size-small)}
+.remodel p{margin:0 0 10px}
+@media (max-width:720px){body{font-size:var(--size-body-sm)}h1{font-size:var(--size-title-sm)}
+main{padding:36px 16px 56px}header{margin-bottom:44px}dl.facts{grid-template-columns:1fr}dl.facts dd{margin-bottom:6px}}</style>
+</head>
+<body>
+<main>
+<header><h1>Proof tree: python-auth-declared-model</h1>
+<p class="lede">Each goal is a line of requirements.md.</p>
+<div class="legend"><span class="w w-holds">holds</span><span class="w w-not_established">not established</span><span class="w w-disproven">disproven</span></div>
+<p class="tools"><a id="expand-all" href="#expand-all">Expand all</a><a id="collapse" href="#collapse">Collapse</a></p></header>
+<section aria-labelledby="s-goals">
+<h2 id="s-goals">Goals</h2>
+<div class="root"><div class="row"><span class="w w-not_established">not established</span><span class="t">Check of this repository</span></div>
+<p class="sum">0 hold &middot; 0 not established &middot; 0 disproven &middot; 0 checks</p></div>
+<p class="note">Assure could not read before_request at app/__init__.py:35 and other lines, so it checked nothing in this change.</p>
+<ul class="tree">
+</ul>
+</section>
+<section aria-labelledby="s-read">
+<h2 id="s-read">What Assure read</h2>
+<dl class="facts">
+<dt>Profile</dt><dd>python-auth-declared-model</dd>
+<dt>Check</dt><dd>8595c512cdfce0c068c8d8e80b8c6bc7</dd>
+<dt>First checked</dt><dd>2026-10-22T08:15:09Z</dd>
+<dt>Reading</dt><dd>yellow: could not look: the input could not be represented; Assure could not read `before_request` at `app/__init__.py:35` (a route registration Assure does not read yet) and a line at `app/__init__.py:22` (an app object passed where Assure cannot follow it), and other lines; review those lines in …</dd>
+<dt>Machines</dt><dd>No machine could be read (1 refused)</dd>
+<dt>Bounds</dt><dd>declared premises: 3; version pins: none</dd>
+<dt>Engine</dt><dd>commit e698723a26d260640eae705c98527315d0a86961, release f51d8d02f9a6b53264a0b4bfa8d182d8458a023537732dfc90a95f5a424ba2c3</dd>
+<dt>Not read</dt><dd>M1: the checker refused the machine: incomplete reading: unknown_registration_form (app, 35, before_request); app_object_escape (app, 22, passed to register_extensions, which uses it outside the allow-list); app_object_escape (app, 58, call_argument travis.init_app); app_object_escape (app, 63, call_arg</dd>
+</dl>
+<p class="note">Assure could not read this change. It ran none of the app&#x27;s code. Profile python-auth-declared-model, commit not named.</p>
+</section>
+<footer>Assure</footer>
+</main>
+</body>
+</html>

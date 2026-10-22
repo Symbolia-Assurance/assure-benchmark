@@ -1,0 +1,5 @@
+app/api/users.py:21 py/reflective-xss
+app/api/users.py:31 py/reflective-xss
+app/api/users.py:41 py/reflective-xss
+app/auth/routes.py:29 py/url-redirection
+app/main/routes.py:160 py/reflective-xss

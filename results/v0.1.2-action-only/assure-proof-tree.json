@@ -1,0 +1,46 @@
+{
+  "check_id": "ad668b0efda0adaf49bbdc16a88043e0",
+  "checks": [],
+  "counts": {
+    "checks": 0,
+    "disproven": 0,
+    "holds": 0,
+    "not_established": 0
+  },
+  "execution_authorized": false,
+  "formal_model": null,
+  "goals": [],
+  "hardware_authorized": false,
+  "header": {
+    "bounds": "declared premises: 0; version pins: none",
+    "check_id": "ad668b0efda0adaf49bbdc16a88043e0",
+    "colour": "yellow",
+    "commit": null,
+    "engine": {
+      "commit": "e698723a26d260640eae705c98527315d0a86961",
+      "release": "f51d8d02f9a6b53264a0b4bfa8d182d8458a023537732dfc90a95f5a424ba2c3"
+    },
+    "first_checked_at": "2026-10-22T06:36:08Z",
+    "machines": "No machine could be read (1 refused)",
+    "machines_refused": [
+      {
+        "machine": "M1",
+        "reason": "the checker refused the machine: incomplete reading: unknown_registration_form (app, 35, before_request); app_object_escape (app, 22, passed to register_extensions, which uses it outside the allow-list); app_object_escape (app, 58, call_argument travis.init_app); app_object_escape (app, 60, call_arg"
+      }
+    ],
+    "profile": "python-auth-declared-model",
+    "read": "Assure could not read this change. It ran none of the app's code. Profile python-auth-declared-model, commit not named.",
+    "repository": null,
+    "verdict_line": "yellow: could not look: the input could not be represented; Assure could not read `before_request` at `app/__init__.py:35` (a route registration Assure does not read yet) and a line at `app/__init__.py:22` (an app object passed where Assure cannot follow it), and other lines; review those lines in …"
+  },
+  "industrial_release_authorized": false,
+  "no_reading": "Assure could not read before_request at app/__init__.py:35 and other lines, so it checked nothing in this change.",
+  "not_decided": [],
+  "note": null,
+  "other_checks": [],
+  "physical_validation": false,
+  "release_allowed": false,
+  "schema": "assure.proof-tree/v1",
+  "self_approved": false,
+  "simulation": true
+}

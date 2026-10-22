@@ -1,0 +1,161 @@
+{
+ "confirm": [
+  "/session_identity_key",
+  "/libraries/0",
+  "/libraries/1",
+  "/libraries/2",
+  "/libraries/3",
+  "/libraries/4",
+  "/libraries/5",
+  "/libraries/6",
+  "/public_routes/0/method",
+  "/public_routes/0/path",
+  "/registrations_complete",
+  "/instance_config",
+  "/unconfirmed_libraries/0",
+  "/unconfirmed_libraries/1",
+  "/unconfirmed_libraries/2",
+  "/unconfirmed_libraries/3",
+  "/unconfirmed_libraries/4",
+  "/unconfirmed_libraries/5",
+  "/unconfirmed_libraries/6"
+ ],
+ "declaration": {
+  "app_objects": [
+   {
+    "factory": "create_app",
+    "module": "app",
+    "name": "app"
+   },
+   {
+    "module": "app.views.main_views",
+    "name": "main_blueprint"
+   }
+  ],
+  "app_roots": [
+   "app"
+  ],
+  "elevation_writers": [],
+  "execution_authorized": false,
+  "hardware_authorized": false,
+  "id": "flask-1cde7022d6ed",
+  "identity_writers": [],
+  "idiom": "flask-session-decorator",
+  "industrial_release_authorized": false,
+  "instance_config": "constants-only",
+  "language": "python",
+  "libraries": [
+   "flask_mail",
+   "flask_migrate",
+   "flask_script",
+   "flask_sqlalchemy",
+   "flask_user",
+   "flask_wtf",
+   "wtforms"
+  ],
+  "physical_validation": false,
+  "public_routes": [
+   {
+    "method": "GET",
+    "path": "/"
+   }
+  ],
+  "registrations_complete": true,
+  "release_allowed": false,
+  "schema": "assure.python-auth.declaration/v1",
+  "self_approved": false,
+  "session_identity_key": null,
+  "signout_views": [],
+  "simulation": true,
+  "unconfirmed_libraries": [
+   "flask_mail",
+   "flask_migrate",
+   "flask_script",
+   "flask_sqlalchemy",
+   "flask_user",
+   "flask_wtf",
+   "wtforms"
+  ]
+ },
+ "schema": "assure.identity.declaration-proposal/v1",
+ "setup": {
+  "note": null,
+  "requirements": {
+   "path": "requirements.md",
+   "promises": [
+    {
+     "basis": "every route outside the declared public routes",
+     "establishes_at": "free",
+     "obligation": "AUTH-1",
+     "sentence": "No route outside the declared public routes is reachable without signing in."
+    }
+   ],
+   "text": "# What this app promises\n\n- R1 [auth]: No route outside the declared public routes is reachable without signing in.\n"
+  },
+  "workflow": {
+   "path": ".github/workflows/assure.yml",
+   "text": "name: Assure\n\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\npermissions:\n  contents: read\n  id-token: write\n  pull-requests: write\n\njobs:\n  assure:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5\n\n      - name: Set up Python 3.14\n        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6\n        with:\n          python-version: \"3.14\"\n\n      - name: Assure check\n        id: assure\n        uses: Symbolia-Assurance/assure-action@beta\n        with:\n          profile: python-auth-declared-model\n          requirements: requirements.md\n\n      - name: Keep the verdict\n        if: always()\n        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7\n        with:\n          name: assure-verdict\n          path: ${{ steps.assure.outputs.verdict-path }}\n"
+  }
+ },
+ "sources": {
+  "/app_objects/0/factory": "app/__init__.py:27",
+  "/app_objects/0/module": "app/__init__.py:27",
+  "/app_objects/0/name": "app/__init__.py:27",
+  "/app_objects/1/module": "app/views/main_views.py:13",
+  "/app_objects/1/name": "app/views/main_views.py:13",
+  "/app_roots/0": "app/__init__.py:27",
+  "/id": "unread",
+  "/idiom": "app/__init__.py:27",
+  "/instance_config": "app/__init__.py:32",
+  "/language": "app/__init__.py:27",
+  "/libraries/0": "app/__init__.py:10",
+  "/libraries/1": "app/__init__.py:11",
+  "/libraries/2": "app/__init__.py:8",
+  "/libraries/3": "app/__init__.py:9",
+  "/libraries/4": "app/__init__.py:12",
+  "/libraries/5": "app/__init__.py:13",
+  "/libraries/6": "app/__init__.py:53",
+  "/public_routes/0/method": "app/views/main_views.py:16",
+  "/public_routes/0/path": "app/views/main_views.py:16",
+  "/registrations_complete": "unread",
+  "/session_identity_key": "unread",
+  "/unconfirmed_libraries/0": "app/__init__.py:10",
+  "/unconfirmed_libraries/1": "app/__init__.py:11",
+  "/unconfirmed_libraries/2": "app/__init__.py:8",
+  "/unconfirmed_libraries/3": "app/__init__.py:9",
+  "/unconfirmed_libraries/4": "app/__init__.py:12",
+  "/unconfirmed_libraries/5": "app/__init__.py:13",
+  "/unconfirmed_libraries/6": "app/__init__.py:53"
+ },
+ "stack": "python/flask",
+ "to_confirm": [
+  {
+   "method": "GET",
+   "note": "/member checks something before it runs (`@login_required`, in the decorator login_required at app/views/main_views.py:23); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/member",
+   "source": "app/views/main_views.py:22",
+   "where": "app/views/main_views.py:23"
+  },
+  {
+   "method": "GET",
+   "note": "/admin checks something before it runs (`@roles_required('admin')`, in the decorator roles_required at app/views/main_views.py:30); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/admin",
+   "source": "app/views/main_views.py:29",
+   "where": "app/views/main_views.py:30"
+  },
+  {
+   "method": "GET",
+   "note": "/main/profile checks something before it runs (`@login_required`, in the decorator login_required at app/views/main_views.py:36); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/main/profile",
+   "source": "app/views/main_views.py:35",
+   "where": "app/views/main_views.py:36"
+  },
+  {
+   "method": "POST",
+   "note": "/main/profile checks something before it runs (`@login_required`, in the decorator login_required at app/views/main_views.py:36); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/main/profile",
+   "source": "app/views/main_views.py:35",
+   "where": "app/views/main_views.py:36"
+  }
+ ]
+}

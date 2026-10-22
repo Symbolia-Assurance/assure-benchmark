@@ -1,0 +1,240 @@
+{
+ "confirm": [
+  "/libraries/0",
+  "/libraries/1",
+  "/libraries/2",
+  "/libraries/3",
+  "/libraries/4",
+  "/libraries/5",
+  "/libraries/6",
+  "/libraries/7",
+  "/libraries/8",
+  "/libraries/9",
+  "/libraries/10",
+  "/libraries/11",
+  "/registrations_complete",
+  "/unconfirmed_libraries/0",
+  "/unconfirmed_libraries/1",
+  "/unconfirmed_libraries/2",
+  "/unconfirmed_libraries/3",
+  "/unconfirmed_libraries/4",
+  "/unconfirmed_libraries/5",
+  "/unconfirmed_libraries/6",
+  "/unconfirmed_libraries/7",
+  "/unconfirmed_libraries/8",
+  "/unconfirmed_libraries/9",
+  "/unconfirmed_libraries/10",
+  "/unconfirmed_libraries/11"
+ ],
+ "declaration": {
+  "app_objects": [
+   {
+    "factory": "create_app",
+    "module": "conduit.app",
+    "name": "app"
+   },
+   {
+    "module": "conduit.articles.views",
+    "name": "blueprint"
+   },
+   {
+    "module": "conduit.profile.views",
+    "name": "blueprint"
+   },
+   {
+    "module": "conduit.user.views",
+    "name": "blueprint"
+   }
+  ],
+  "app_roots": [
+   "conduit"
+  ],
+  "elevation_writers": [],
+  "execution_authorized": false,
+  "guards": [
+   {
+    "decorator": "jwt_required",
+    "definition": "flask_jwt_extended.jwt_required",
+    "key": "identity",
+    "library": {
+     "name": "flask_jwt_extended",
+     "version": "3.10.0"
+    },
+    "requires": "session_key_present"
+   }
+  ],
+  "hardware_authorized": false,
+  "id": "flask-4d477c186fac",
+  "identity_writers": [
+   "conduit.user.views.login_user",
+   "conduit.user.views.register_user"
+  ],
+  "idiom": "flask-session-decorator",
+  "industrial_release_authorized": false,
+  "language": "python",
+  "libraries": [
+   "click",
+   "flask_apispec",
+   "flask_bcrypt",
+   "flask_caching",
+   "flask_cors",
+   "flask_jwt_extended",
+   "flask_migrate",
+   "flask_sqlalchemy",
+   "marshmallow",
+   "pytest",
+   "slugify",
+   "sqlalchemy"
+  ],
+  "physical_validation": false,
+  "public_routes": [],
+  "registrations_complete": true,
+  "release_allowed": false,
+  "schema": "assure.python-auth.declaration/v1",
+  "self_approved": false,
+  "session_identity_key": "identity",
+  "signout_views": [],
+  "simulation": true,
+  "unconfirmed_libraries": [
+   "click",
+   "flask_apispec",
+   "flask_bcrypt",
+   "flask_caching",
+   "flask_cors",
+   "flask_jwt_extended",
+   "flask_migrate",
+   "flask_sqlalchemy",
+   "marshmallow",
+   "pytest",
+   "slugify",
+   "sqlalchemy"
+  ]
+ },
+ "schema": "assure.identity.declaration-proposal/v1",
+ "setup": {
+  "note": null,
+  "requirements": {
+   "path": "requirements.md",
+   "promises": [
+    {
+     "basis": "every route outside the declared public routes",
+     "establishes_at": "free",
+     "obligation": "AUTH-1",
+     "sentence": "No route outside the declared public routes is reachable without signing in."
+    },
+    {
+     "basis": "sign-in guard jwt_required (session key identity) on POST /api/articles",
+     "establishes_at": "premium",
+     "obligation": "route-sign-in",
+     "sentence": "Only a signed-in user can reach POST /api/articles."
+    }
+   ],
+   "text": "# What this app promises\n\n- R1 [auth]: No route outside the declared public routes is reachable without signing in.\n- R2 [auth]: Only a signed-in user can reach POST /api/articles.\n"
+  },
+  "workflow": {
+   "path": ".github/workflows/assure.yml",
+   "text": "name: Assure\n\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\npermissions:\n  contents: read\n  id-token: write\n  pull-requests: write\n\njobs:\n  assure:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5\n\n      - name: Set up Python 3.14\n        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6\n        with:\n          python-version: \"3.14\"\n\n      - name: Assure check\n        id: assure\n        uses: Symbolia-Assurance/assure-action@beta\n        with:\n          profile: python-auth-declared-model\n          requirements: requirements.md\n\n      - name: Keep the verdict\n        if: always()\n        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7\n        with:\n          name: assure-verdict\n          path: ${{ steps.assure.outputs.verdict-path }}\n"
+  }
+ },
+ "sources": {
+  "/app_objects/0/factory": "conduit/app.py:17",
+  "/app_objects/0/module": "conduit/app.py:17",
+  "/app_objects/0/name": "conduit/app.py:17",
+  "/app_objects/1/module": "conduit/articles/views.py:16",
+  "/app_objects/1/name": "conduit/articles/views.py:16",
+  "/app_objects/2/module": "conduit/profile/views.py:11",
+  "/app_objects/2/name": "conduit/profile/views.py:11",
+  "/app_objects/3/module": "conduit/user/views.py:14",
+  "/app_objects/3/name": "conduit/user/views.py:14",
+  "/app_roots/0": "conduit/app.py:17",
+  "/guards/0/decorator": "conduit/articles/views.py:39",
+  "/guards/0/definition": "conduit/articles/views.py:7",
+  "/guards/0/key": "Pipfile.lock:161",
+  "/guards/0/library/name": "conduit/articles/views.py:7",
+  "/guards/0/library/version": "Pipfile.lock:161",
+  "/guards/0/requires": "conduit/articles/views.py:7",
+  "/id": "unread",
+  "/identity_writers/0": "conduit/user/views.py:37",
+  "/identity_writers/1": "conduit/user/views.py:23",
+  "/idiom": "conduit/app.py:17",
+  "/language": "conduit/app.py:17",
+  "/libraries/0": "conduit/commands.py:7",
+  "/libraries/1": "conduit/articles/views.py:6",
+  "/libraries/10": "conduit/articles/models.py:6",
+  "/libraries/11": "conduit/database.py:3",
+  "/libraries/2": "conduit/extensions.py:4",
+  "/libraries/3": "conduit/extensions.py:5",
+  "/libraries/4": "conduit/extensions.py:6",
+  "/libraries/5": "conduit/articles/models.py:5",
+  "/libraries/6": "conduit/extensions.py:8",
+  "/libraries/7": "conduit/extensions.py:9",
+  "/libraries/8": "conduit/articles/serializers.py:3",
+  "/libraries/9": "conduit/commands.py:20",
+  "/registrations_complete": "unread",
+  "/session_identity_key": "Pipfile.lock:161",
+  "/unconfirmed_libraries/0": "conduit/commands.py:7",
+  "/unconfirmed_libraries/1": "conduit/articles/views.py:6",
+  "/unconfirmed_libraries/10": "conduit/articles/models.py:6",
+  "/unconfirmed_libraries/11": "conduit/database.py:3",
+  "/unconfirmed_libraries/2": "conduit/extensions.py:4",
+  "/unconfirmed_libraries/3": "conduit/extensions.py:5",
+  "/unconfirmed_libraries/4": "conduit/extensions.py:6",
+  "/unconfirmed_libraries/5": "conduit/articles/models.py:5",
+  "/unconfirmed_libraries/6": "conduit/extensions.py:8",
+  "/unconfirmed_libraries/7": "conduit/extensions.py:9",
+  "/unconfirmed_libraries/8": "conduit/articles/serializers.py:3",
+  "/unconfirmed_libraries/9": "conduit/commands.py:20"
+ },
+ "stack": "python/flask",
+ "to_confirm": [
+  {
+   "method": "GET",
+   "note": "/api/articles checks something before it runs (`rules = sorted( current_app.url_map.iter_rules(), key=lambda rule: getattr(rule, order))`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at conduit/commands.py:89); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/articles",
+   "source": "conduit/articles/views.py:23",
+   "where": "conduit/commands.py:89"
+  },
+  {
+   "method": "GET",
+   "note": "/api/articles/{slug} checks something before it runs (`rules = sorted( current_app.url_map.iter_rules(), key=lambda rule: getattr(rule, order))`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at conduit/commands.py:89); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/articles/{slug}",
+   "source": "conduit/articles/views.py:78",
+   "where": "conduit/commands.py:89"
+  },
+  {
+   "method": "GET",
+   "note": "/api/tags checks something before it runs (`rules = sorted( current_app.url_map.iter_rules(), key=lambda rule: getattr(rule, order))`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at conduit/commands.py:89); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/tags",
+   "source": "conduit/articles/views.py:127",
+   "where": "conduit/commands.py:89"
+  },
+  {
+   "method": "GET",
+   "note": "/api/articles/{slug}/comments checks something before it runs (`rules = sorted( current_app.url_map.iter_rules(), key=lambda rule: getattr(rule, order))`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at conduit/commands.py:89); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/articles/{slug}/comments",
+   "source": "conduit/articles/views.py:137",
+   "where": "conduit/commands.py:89"
+  },
+  {
+   "method": "GET",
+   "note": "/api/profiles/{username} checks something before it runs (`rules = sorted( current_app.url_map.iter_rules(), key=lambda rule: getattr(rule, order))`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at conduit/commands.py:89); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/profiles/{username}",
+   "source": "conduit/profile/views.py:14",
+   "where": "conduit/commands.py:89"
+  },
+  {
+   "method": "POST",
+   "note": "/api/users checks something before it runs (`rules = sorted( current_app.url_map.iter_rules(), key=lambda rule: getattr(rule, order))`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at conduit/commands.py:89); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/users",
+   "source": "conduit/user/views.py:17",
+   "where": "conduit/commands.py:89"
+  },
+  {
+   "method": "POST",
+   "note": "/api/users/login checks something before it runs (`rules = sorted( current_app.url_map.iter_rules(), key=lambda rule: getattr(rule, order))`, a reference to getattr other than a direct call with a constant name in a module Assure cannot read statically, at conduit/commands.py:89); Assure did not draft it as public. Tell Assure which guard this is.",
+   "path": "/api/users/login",
+   "source": "conduit/user/views.py:30",
+   "where": "conduit/commands.py:89"
+  }
+ ]
+}

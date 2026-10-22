@@ -1,0 +1,13 @@
+app/local_settings_example.py:13 B105
+app/local_settings_example.py:27 B105
+tests/test_page_urls.py:12 B101
+tests/test_page_urls.py:16 B106
+tests/test_page_urls.py:17 B101
+tests/test_page_urls.py:19 B101
+tests/test_page_urls.py:23 B101
+tests/test_page_urls.py:27 B101
+tests/test_page_urls.py:31 B101
+tests/test_page_urls.py:35 B106
+tests/test_page_urls.py:36 B101
+tests/test_page_urls.py:38 B101
+tests/test_page_urls.py:42 B101

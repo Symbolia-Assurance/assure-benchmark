@@ -1,0 +1,11 @@
+diff --git a/app/main/views.py b/app/main/views.py
+index 3a7add3..b6cbb78 100644
+--- a/app/main/views.py
++++ b/app/main/views.py
+@@ -278,0 +279,6 @@ def moderate_disable(id):
++
++
++@main.route('/all-users')
++def all_users():
++    users = User.query.order_by(User.id).all()
++    return {'users': [{'username': u.username, 'email': u.email} for u in users]}

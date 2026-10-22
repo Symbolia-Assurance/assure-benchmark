@@ -1,0 +1,13 @@
+diff --git a/rest-server-v2.py b/rest-server-v2.py
+index a28f867..5802f53 100755
+--- a/rest-server-v2.py
++++ b/rest-server-v2.py
+@@ -116,0 +117,8 @@ api.add_resource(TaskAPI, '/todo/api/v1.0/tasks/<int:id>', endpoint='task')
++class TaskExportAPI(Resource):
++    def get(self):
++        return {'tasks': [marshal(task, task_fields) for task in tasks]}
++
++
++api.add_resource(TaskExportAPI, '/todo/api/v1.0/tasks/export', endpoint='tasks_export')
++
++

@@ -1,0 +1,10 @@
+diff --git a/app/views/main_views.py b/app/views/main_views.py
+index f808cc1..b3c2d73 100644
+--- a/app/views/main_views.py
++++ b/app/views/main_views.py
+@@ -56,0 +57,5 @@ def user_profile_page():
++
++
++@main_blueprint.route('/admin/overview')
++def admin_overview():
++    return render_template('main/admin_page.html')

@@ -1,0 +1,119 @@
+{
+ "confirm": [
+  "/session_identity_key",
+  "/libraries/0",
+  "/libraries/1",
+  "/registrations_complete",
+  "/unconfirmed_libraries/0",
+  "/unconfirmed_libraries/1"
+ ],
+ "declaration": {
+  "app_objects": [
+   {
+    "module": "rest-server-v2",
+    "name": "app"
+   },
+   {
+    "module": "rest-server",
+    "name": "app"
+   }
+  ],
+  "app_roots": [
+   "rest-server-v2.py",
+   "rest-server.py"
+  ],
+  "elevation_writers": [],
+  "execution_authorized": false,
+  "guards": [
+   {
+    "decorator": "auth.login_required",
+    "definition": "rest-server.auth",
+    "library": {
+     "name": "flask_httpauth",
+     "version": "4.5.0"
+    },
+    "requires": "request_credentials"
+   },
+   {
+    "decorator": "auth.login_required",
+    "definition": "rest-server-v2.auth",
+    "library": {
+     "name": "flask_httpauth",
+     "version": "4.5.0"
+    },
+    "requires": "request_credentials"
+   }
+  ],
+  "hardware_authorized": false,
+  "id": "flask-08f9ee609f2e",
+  "identity_writers": [],
+  "idiom": "flask-session-decorator",
+  "industrial_release_authorized": false,
+  "language": "python",
+  "libraries": [
+   "flask_httpauth",
+   "flask_restful"
+  ],
+  "physical_validation": false,
+  "public_routes": [],
+  "registrations_complete": true,
+  "release_allowed": false,
+  "schema": "assure.python-auth.declaration/v1",
+  "self_approved": false,
+  "session_identity_key": null,
+  "signout_views": [],
+  "simulation": true,
+  "unconfirmed_libraries": [
+   "flask_httpauth",
+   "flask_restful"
+  ]
+ },
+ "schema": "assure.identity.declaration-proposal/v1",
+ "setup": {
+  "note": null,
+  "requirements": {
+   "path": "requirements.md",
+   "promises": [
+    {
+     "basis": "every route outside the declared public routes",
+     "establishes_at": "free",
+     "obligation": "AUTH-1",
+     "sentence": "No route outside the declared public routes is reachable without signing in."
+    }
+   ],
+   "text": "# What this app promises\n\n- R1 [auth]: No route outside the declared public routes is reachable without signing in.\n"
+  },
+  "workflow": {
+   "path": ".github/workflows/assure.yml",
+   "text": "name: Assure\n\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\npermissions:\n  contents: read\n  id-token: write\n  pull-requests: write\n\njobs:\n  assure:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5\n\n      - name: Set up Python 3.14\n        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6\n        with:\n          python-version: \"3.14\"\n\n      - name: Assure check\n        id: assure\n        uses: Symbolia-Assurance/assure-action@beta\n        with:\n          profile: python-auth-declared-model\n          requirements: requirements.md\n\n      - name: Keep the verdict\n        if: always()\n        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7\n        with:\n          name: assure-verdict\n          path: ${{ steps.assure.outputs.verdict-path }}\n"
+  }
+ },
+ "sources": {
+  "/app_objects/0/module": "rest-server-v2.py:10",
+  "/app_objects/0/name": "rest-server-v2.py:10",
+  "/app_objects/1/module": "rest-server.py:5",
+  "/app_objects/1/name": "rest-server.py:5",
+  "/app_roots/0": "rest-server-v2.py:10",
+  "/app_roots/1": "rest-server.py:5",
+  "/guards/0/decorator": "rest-server.py:60",
+  "/guards/0/definition": "rest-server.py:6",
+  "/guards/0/library/name": "rest-server.py:6",
+  "/guards/0/library/version": "requirements.txt:4",
+  "/guards/0/requires": "rest-server.py:6",
+  "/guards/1/decorator": "rest-server-v2.py:113",
+  "/guards/1/definition": "rest-server-v2.py:12",
+  "/guards/1/library/name": "rest-server-v2.py:12",
+  "/guards/1/library/version": "requirements.txt:4",
+  "/guards/1/requires": "rest-server-v2.py:12",
+  "/id": "unread",
+  "/idiom": "rest-server-v2.py:10",
+  "/language": "rest-server-v2.py:10",
+  "/libraries/0": "rest-server-v2.py:8",
+  "/libraries/1": "rest-server-v2.py:7",
+  "/registrations_complete": "unread",
+  "/session_identity_key": "unread",
+  "/unconfirmed_libraries/0": "rest-server-v2.py:8",
+  "/unconfirmed_libraries/1": "rest-server-v2.py:7"
+ },
+ "stack": "python/flask"
+}

@@ -1,0 +1,11 @@
+diff --git a/my_flask_app/user/views.py b/my_flask_app/user/views.py
+index d3b3358..473251b 100644
+--- a/my_flask_app/user/views.py
++++ b/my_flask_app/user/views.py
+@@ -13,0 +14,6 @@ def members():
++
++
++@blueprint.route("/all/")
++def all_members():
++    """List all members."""
++    return render_template("users/members.html")
